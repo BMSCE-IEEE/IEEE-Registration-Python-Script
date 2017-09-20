@@ -14,6 +14,11 @@ def put_tabs(window, no_of_tabs):
     for i in range(no_of_tabs):
         ActionChains(window).key_down(Keys.TAB).key_up(Keys.TAB).perform()
 
+def select_option(window, option):
+    ''' Function to select nth option '''
+    for i in range(option):
+        ActionChains(window).key_down(Keys.DOWN).key_up(Keys.DOWN).perform()
+
 def fill_input(window, input_id, value):
     ''' Function fills in textboxes with value '''
     continue_link = window.find_element_by_id(input_id)
@@ -64,17 +69,37 @@ def fill_contact_information(window):
 
 def fill_educational_information(window, year):
     ''' Function to fill educational details '''
+    # @debug
+    time.sleep(5)
+    window.execute_script('window.scrollTo(0, 1000)')
+    time.sleep(5)
+    #
     try:
         window.find_element_by_id("AttestationInfo").click()
         fill_after_tabs(window, 8, "B.M")
         time.sleep(2)
-        put_tabs(window, 4)
-
-
+        put_tabs(window, 3)
+        ActionChains(window).key_down(Keys.ENTER).key_up(Keys.ENTER).perform()
+        time.sleep(4)
+        put_tabs(window, 1)
+        ActionChains(window).key_down(Keys.SPACE).key_up(Keys.SPACE).perform()
+        put_tabs(window, 1)
+        select_option(window, 7)
+        put_tabs(window, 1)
+        select_option(window, 136)
+        put_tabs(window, 1)
+        select_option(window, 6)
+        put_tabs(window, 1)
+        select_option(window, int(year)-2017)
+        put_tabs(window, 2)
+        select_option(window, 3)
+        put_tabs(window, 1)
+        select_option(window, 16)
+        put_tabs(window, 2)
+        ActionChains(window).key_down(Keys.ENTER).key_up(Keys.ENTER).perform()        
     except NoSuchElementException:
         time.sleep(2)
         fill_educational_information(window, year)
-        ActionChains(window).key_down(Keys.ENTER).key_up(Keys.ENTER).perform()
 
 def main():
     ''' Initialization function '''
@@ -88,7 +113,7 @@ def main():
         year_of_grad = record[2]'''
     window.get("http://www.ieee.org/go/join_student")
     login(window, 'shrividhiya.te17@bmsce.ac.in')
-    fill_contact_information(window)
+    #fill_contact_information(window)
     fill_educational_information(window, '2021')
     csv.close()
 
