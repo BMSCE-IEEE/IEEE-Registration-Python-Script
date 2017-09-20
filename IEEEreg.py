@@ -157,28 +157,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-'''
-continue_link = driver.find_element_by_name("proceed-checkout-button") 
-continue_link.click()
-
-continue_link = driver.find_element_by_xpath("//a[@id='open-challan-link']") 
-continue_link.click()
-
-continue_link = driver.find_element_by_xpath("//input[@id='mobile-telephone-number']")
-continue_link.click()
-continue_link.clear()
-continue_link.send_keys("+919431908524")
-
-continue_link = driver.find_element_by_xpath("//input[@id='challan-membership-terms-conditions']") 
-continue_link.click()
-
-continue_link = driver.find_element_by_xpath("//input[@id='challan-terms-conditions']") 
-continue_link.click()
-
-time.sleep(2)
-
-continue_link = driver.find_element_by_xpath("//input[@id='saveMobilePhoneId']") 
-continue_link.click()
-'''
-
