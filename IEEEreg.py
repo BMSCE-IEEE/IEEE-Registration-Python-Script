@@ -70,12 +70,16 @@ def fill_contact_information(window):
 def fill_educational_information(window, year):
     ''' Function to fill educational details '''
     # @debug
-    time.sleep(5)
-    window.execute_script('window.scrollTo(0, 1000)')
-    time.sleep(5)
+    # time.sleep(5)
+    # window.execute_script('window.scrollTo(0, 1000)')
+    # time.sleep(5)
     #
+    
+    time.sleep(10)
     try:
-        window.find_element_by_id("AttestationInfo").click()
+        put_tabs(window, 2)
+        ActionChains(window).key_down(Keys.ESCAPE).key_up(Keys.ESCAPE).perform()
+        # window.find_element_by_id('AttestationInfo').click()
         fill_after_tabs(window, 8, "B.M")
         time.sleep(2)
         put_tabs(window, 3)
@@ -101,125 +105,60 @@ def fill_educational_information(window, year):
         time.sleep(2)
         fill_educational_information(window, year)
 
+def fill_additional_details(window):
+    ''' Function to fill in additional details '''
+    try:
+        put_tabs(window, 7)
+        ActionChains(window).key_down(Keys.ENTER).key_up(Keys.ENTER).perform()
+        time.sleep(5)
+        window.find_element_by_id('mbMCAddMemProdBtn').click()
+        window.execute_script('window.scrollTo(0, 2400)')
+        time.sleep(12)
+        window.find_element_by_id('TechnicallyCurrent').click()
+        window.find_element_by_id('CareerOpurtunities').click()
+        window.find_element_by_id('ExpandProfessionalNetwork').click()
+        window.find_element_by_id('ConnectToLocalActivities').click()
+        window.find_element_by_id('HumanitarianPrograms').click()
+        window.find_element_by_id('Discounts').click()
+        fill_select(window, 'member-referral', "Member referral")
+        fill_input(window, 'referring-mem-name', 'Saurabh Sunil Chheda')
+        fill_input(window, 'referring-mem-number', '93651909')
+        put_tabs(window, 1)
+        ActionChains(window).key_down(Keys.ENTER).key_up(Keys.ENTER).perform()
+    except NoSuchElementException:
+        time.sleep(2)
+        fill_additional_details(window)
+
+def logout(window):
+    ''' Logs user out '''
+    time.sleep(10)
+    username = window.find_element_by_id('mn-ieee-username')
+    logout_button = window.find_element_by_id('mn-signout-link')
+    ActionChains(window).move_to_element(username).click(logout_button).perform()
+    time.sleep(10)
+
+
 def main():
     ''' Initialization function '''
-    window = webdriver.Firefox()
 
     csv = open("todo.csv", 'r')
-    '''for record in csv:
+    for record in csv:
+        window = webdriver.Firefox()
         record = record.split(',')
         email = record[0]
-        dept = record[1]
-        year_of_grad = record[2]'''
-    window.get("http://www.ieee.org/go/join_student")
-    login(window, 'shrividhiya.te17@bmsce.ac.in')
-    #fill_contact_information(window)
-    fill_educational_information(window, '2021')
+        year_of_grad = record[1]
+        window.get("http://www.ieee.org/go/join_student")
+        login(window, email)
+        fill_contact_information(window)
+        fill_educational_information(window, year_of_grad)
+        fill_additional_details(window)
+        window.close()
     csv.close()
 
 if __name__ == "__main__":
     main()
 
 '''
-continue_link = driver.find_element_by_xpath("//input[@id='student-id']") 
-continue_link.click()
-
-continue_link = driver.find_element_by_xpath("//input[@id='stud-university']")
-continue_link.click()
-continue_link.clear()
-continue_link.send_keys("B.M")
-
-time.sleep(2)
-
-continue_link = driver.find_element_by_xpath("//a[@title='Select B. M. Sreenivasalah College of Engineering']") 
-continue_link.click()
-
-
-continue_link = driver.find_element_by_xpath("//input[@id='educational-info_currentSchool_degreeType_codeUndergraduate Student']") 
-continue_link.click()
-
-el = driver.find_element_by_id('stud-degree-pursued')
-for option in el.find_elements_by_tag_name('option'):
-    if option.text == 'Bachelor of Engineering':
-        option.click() # select() in earlier versions of webdriver
-        break
-
-el = driver.find_element_by_id('stud-degree-pursued')
-for option in el.find_elements_by_tag_name('option'):
-    if option.text == 'Bachelor of Engineering':
-        option.click() # select() in earlier versions of webdriver
-        break
-
-###################################################################
-#########		Below code is temperory 	  #########
-###################################################################
-###				 ACAD  				###
-el = driver.find_element_by_id('stud-degree-pursued')
-for option in el.find_elements_by_tag_name('option'):
-    if option.text == 'Bachelor of Engineering':
-        option.click() # select() in earlier versions of webdriver
-        break
-###				PROGRAM				###
-###################################################################
-#########		Above code is temperory 	  #########
-###################################################################
-
-
-el = driver.find_element_by_id('estimated-grad-month')
-for option in el.find_elements_by_tag_name('option'):
-    if option.text == gradMnth:
-        option.click() # select() in earlier versions of webdriver
-        break
-el = driver.find_element_by_id('estimated-grad-year')
-for option in el.find_elements_by_tag_name('option'):
-    if option.text == gradYear:
-        option.click() # select() in earlier versions of webdriver
-        break
-el = driver.find_element_by_id('stud-current-study')
-for option in el.find_elements_by_tag_name('option'):
-    if option.text == "Engineering":
-        option.click() # select() in earlier versions of webdriver
-        break
-el = driver.find_element_by_id('stud-technical-focus')
-for option in el.find_elements_by_tag_name('option'):
-    if option.text == "Engineering Profession":
-        option.click() # select() in earlier versions of webdriver
-        break
-
-continue_link = driver.find_element_by_xpath("//input[@id='save-educational-info']") 
-continue_link.click()
-
-time.sleep(3)
-
-continue_link = driver.find_element_by_xpath("//input[@id='TechnicallyCurrent']") 
-continue_link.click()
-
-continue_link = driver.find_element_by_xpath("//input[@id='CareerOpurtunities']") 
-continue_link.click()
-
-continue_link = driver.find_element_by_xpath("//input[@id='ExpandProfessionalNetwork']") 
-continue_link.click()
-
-continue_link = driver.find_element_by_xpath("//input[@id='ConnectToLocalActivities']") 
-continue_link.click()
-
-el = driver.find_element_by_id('member-referral')
-for option in el.find_elements_by_tag_name('option'):
-    if option.text == "Member referral":
-        option.click() # select() in earlier versions of webdriver
-        break
-
-
-continue_link = driver.find_element_by_xpath("//input[@id='referring-mem-name']")
-continue_link.click()
-continue_link.clear()
-continue_link.send_keys("Tarun Verma")
-
-continue_link = driver.find_element_by_xpath("//input[@id='referring-mem-number']")
-continue_link.click()
-continue_link.clear()
-continue_link.send_keys("93151099")
-
 continue_link = driver.find_element_by_name("proceed-checkout-button") 
 continue_link.click()
 
